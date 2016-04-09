@@ -1,0 +1,7 @@
+workflow.txt
+.git
+.svn
+bower_components
+nenv
+node_modules
+venv
