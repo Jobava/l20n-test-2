@@ -9,17 +9,12 @@
 </head>
 <body>
     <select id="select" onchange="set_language(get_selected_language() )">
-    <!--  <option value="value1">Value 1</option> 
-          <option value="value2" selected>Value 2</option>
-          <option value="value3">Value 3</option>
-    -->
     </select>
     <h1 data-l10n-id="title"></h1>
     <h2 data-l10n-id="subtitle"></h2>
     <p data-l10n-id="brown_fox"></p>
-    <script src="bower_components/l20n/dist/compat/web/l20n.js"></script>
-    <script defer src="http://localhost:8000/pontoon.js"></script>
     
+    <script src="bower_components/l20n/dist/compat/web/l20n.js"></script>
     <script>
     
     //get the default language from the defaultLanguage META tag in HEAD
@@ -53,7 +48,7 @@
     // get list of available languages by parsing the availableLanguages
     //    META tag in HEAD 
     var get_list_of_languages = function () {
-        var list = document.getElementById('availableLanguages').
+        let list = document.getElementById('availableLanguages').
           getAttribute('content');
         list = list.replace(/\s/g, '');
         return list.split(',');
@@ -61,17 +56,17 @@
 
     // get the selected language in the select tag with id 'select'
     var get_selected_language = function () {
-        var index = document.getElementById('select').selectedIndex;
+        let index = document.getElementById('select').selectedIndex;
         return document.getElementById('select').
             options[index].getAttribute('value');
     };
     
     // Adds one option to the select tag, v is the value, t is the text
     var add_to_select = function (v, t) {
-        var optionElem = document.getElementById('select');
-        var opt = document.createElement("option");
+        let optionElem = document.getElementById('select');
+        let opt = document.createElement("option");
         opt.setAttribute('value', v);
-        var optText = document.createTextNode(t);
+        let optText = document.createTextNode(t);
         opt.appendChild(optText);
         optionElem.appendChild(opt);
     };
