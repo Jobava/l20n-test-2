@@ -22,7 +22,7 @@
     var running_in_pontoon = false;
 
     var change_option = function () {
-        if(!is_running_in_pontoon) {
+        if(false === is_running_in_pontoon) {
             set_language(get_selected_language() ); 
         } 
     };
@@ -33,8 +33,13 @@
                 return;
             }
 	    running_in_pontoon = true;
+
+            //clear the display:none style from the 
+            //'We are running in Pontoon' message
             document.getElementById('pontoon_message').
               setAttribute('style', '');
+            
+            //hide the select tag when we're running in Pontoon
             document.getElementById('select').style.visibility = 'hidden';
         },false);
     }();
