@@ -2,15 +2,93 @@
 <head>
     <title data-l10n-id="titlebar_title"></title>
     
-    <meta name="defaultLanguage" content="en-US">
-    <meta name="availableLanguages" content="en-US, fr, de, ro">
+    <meta name="defaultLanguage" id="defaultLanguage" content="en-US">
+    <meta name="availableLanguages" id="availableLanguages" content="en-US, fr, de, ro">
     <link rel="localization" href="static/locales/{locale}/index.l20n">
+    <script defer src="http://localhost:8000/pontoon.js"></script>
 </head>
 <body>
+    <select id="select" onchange="set_language(get_selected_language() )">
+    <!--  <option value="value1">Value 1</option> 
+          <option value="value2" selected>Value 2</option>
+          <option value="value3">Value 3</option>
+    -->
+    </select>
     <h1 data-l10n-id="title"></h1>
     <h2 data-l10n-id="subtitle"></h2>
     <p data-l10n-id="brown_fox"></p>
     <script src="bower_components/l20n/dist/compat/web/l20n.js"></script>
-    <script defer src="https://pontoon.mozilla.org/pontoon.js"></script>
+    <script defer src="http://localhost:8000/pontoon.js"></script>
+    
+    <script>
+    
+    //get the default language from the defaultLanguage META tag in HEAD
+    var get_default_language = function () {
+        let langElem = document.getElementById('defaultLanguage');
+        return langElem.getAttribute('content').trim();
+    };
+
+    //set the language for l20n.js to use
+    var set_language = function (language_to_set) {
+        if (is_valid_language(language_to_set)) {
+            document.l10n.requestLanguages([language_to_set]);
+        } else {
+            alert("attempted to set '" + language_to_set + 
+              "' which is not a valid language");
+        }
+    };
+
+    //true if the language is in the list as per the availableLanguages 
+    //    META tag in HEAD
+    var is_valid_language = function (test_lang) {
+        let list_of_languages = get_list_of_languages();
+        for (let i=0; i<list_of_languages.length; ++i) {
+            if (list_of_languages[i].trim() === test_lang.trim()) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    // get list of available languages by parsing the availableLanguages
+    //    META tag in HEAD 
+    var get_list_of_languages = function () {
+        var list = document.getElementById('availableLanguages').
+          getAttribute('content');
+        list = list.replace(/\s/g, '');
+        return list.split(',');
+    };
+
+    // get the selected language in the select tag with id 'select'
+    var get_selected_language = function () {
+        var index = document.getElementById('select').selectedIndex;
+        return document.getElementById('select').
+            options[index].getAttribute('value');
+    };
+    
+    // Adds one option to the select tag, v is the value, t is the text
+    var add_to_select = function (v, t) {
+        var optionElem = document.getElementById('select');
+        var opt = document.createElement("option");
+        opt.setAttribute('value', v);
+        var optText = document.createTextNode(t);
+        opt.appendChild(optText);
+        optionElem.appendChild(opt);
+    };
+
+    //populates the select tag with the id 'select'
+    var populate_select = function () {
+        let list_of_languages = get_list_of_languages();
+        for (let i=0; i<list_of_languages.length; ++i) {
+            add_to_select (list_of_languages[i], list_of_languages[i]);
+        }
+    }();
+
+    var init = function () {
+        let default_language = get_default_language();
+        set_language(default_language);
+        document.getElementById('select').value = default_language;
+    }();
+    </script>
 </body>
 </html>
