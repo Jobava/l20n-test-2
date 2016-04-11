@@ -5,18 +5,41 @@
     <meta name="defaultLanguage" id="defaultLanguage" content="en-US">
     <meta name="availableLanguages" id="availableLanguages" content="en-US, fr, is, ro">
     <link rel="localization" href="static/locales/{locale}/index.l20n">
-    <script defer src="http://localhost:8000/pontoon.js"></script>
 </head>
 <body>
-    <select id="select" onchange="set_language(get_selected_language() )">
-    </select>
+    <select id="select" onchange="change_option()" style=""></select>
+    <p id="pontoon_message" style="display:none">
+        We are running in Pontoon!
+    </p>
     <h1 data-l10n-id="title"></h1>
     <h2 data-l10n-id="subtitle"></h2>
     <p data-l10n-id="brown_fox"></p>
     
     <script src="bower_components/l20n/dist/compat/web/l20n.js"></script>
+    <script src="http://localhost:8000/pontoon.js"></script>
+
     <script>
-    
+    var running_in_pontoon = false;
+
+    var change_option = function () {
+        if(!is_running_in_pontoon) {
+            set_language(get_selected_language() ); 
+        } 
+    };
+
+    var is_pontoon_running = function () {
+        window.addEventListener('message',function(event) {
+	    if(event.origin !== 'http://localhost:8000') {
+                return;
+            }
+	    running_in_pontoon = true;
+            document.getElementById('pontoon_message').
+              setAttribute('style', '');
+            document.getElementById('select').style.visibility = 'hidden';
+        },false);
+    }();
+
+
     //get the default language from the defaultLanguage META tag in HEAD
     var get_default_language = function () {
         let langElem = document.getElementById('defaultLanguage');
@@ -73,6 +96,9 @@
 
     //populates the select tag with the id 'select'
     var populate_select = function () {
+        if (running_in_pontoon) {
+            return;
+        }
         let list_of_languages = get_list_of_languages();
         for (let i=0; i<list_of_languages.length; ++i) {
             add_to_select (list_of_languages[i], list_of_languages[i]);
@@ -80,6 +106,9 @@
     }();
 
     var init = function () {
+        if (running_in_pontoon) {
+            return;
+        }
         let default_language = get_default_language();
         set_language(default_language);
         document.getElementById('select').value = default_language;
