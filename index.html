@@ -11,6 +11,7 @@
     <p id="pontoon_message" style="display:none">
         We are running in Pontoon!
     </p>
+    <p data-l10n-id="new_string"></p>
     <h1 data-l10n-id="title"></h1>
     <h2 data-l10n-id="subtitle"></h2>
     <p data-l10n-id="brown_fox"></p>
@@ -19,6 +20,7 @@
     <script src="http://localhost:8000/pontoon.js"></script>
 
     <script>
+    "use strict";
     var running_in_pontoon = false;
 
     var change_option = function () {
@@ -111,9 +113,9 @@
     }();
 
     var init = function () {
-        if (running_in_pontoon) {
-            return;
-        }
+        //if (running_in_pontoon) {
+        //    return;
+        //}
         let default_language = get_default_language();
         set_language(default_language);
         document.getElementById('select').value = default_language;
