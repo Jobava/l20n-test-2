@@ -113,9 +113,9 @@
     }();
 
     var init = function () {
-        //if (running_in_pontoon) {
-        //    return;
-        //}
+        if (running_in_pontoon) {
+            return;
+        }
         let default_language = get_default_language();
         set_language(default_language);
         document.getElementById('select').value = default_language;
